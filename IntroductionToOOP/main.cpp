@@ -18,7 +18,7 @@ public:
 	}
 	void set_x(double x)
 	{
-		this->x = x; //указательный объект 
+		this->x = x; //указатель на объект 
 	}
 	void set_y(double y)
 	{
@@ -52,7 +52,18 @@ public:
 	{
 		cout << "Destructor\t\t" << this << endl;
 	}
-	
+
+	//Methods
+	double distance(Point other)
+	{
+		double x_distance = this->x - other.x;
+		double y_distance = this->y - other.y;
+		double distance = sqrt(x_distance * x_distance + y_distance * y_distance);
+		return distance;
+
+
+	}
+
 
 	//секция метод
 	void print()const
@@ -60,14 +71,25 @@ public:
 		cout << "X = " << get_x() << "\tY = " << get_y() << endl;
 	}
 
+
 };
 
+//функция
+double distance(Point A, Point B)
+{
+	double x_distance = A.get_x() - B.get_x();
+	double y_distance = A.get_y() - B.get_y();
+	return sqrt(x_distance * x_distance + y_distance * y_distance);
+}
 
+//#define CONSTRUCTORS_CHECK
 //#define STRACT_POINT
+#define DISTANCE_CHECK
 
 void main()
 {
 	setlocale(LC_ALL, "");
+
 #ifdef STRACT_POINT
 	//создане объекта
 	Point A;         //объявление переменной А типа Point// создание объекта А структруры Point
@@ -78,6 +100,9 @@ void main()
 	Point* pA = &A;
 	cout << pA->x << "\t" << pA->y << endl;
 #endif
+
+#ifdef CONSTRUCTORS_CHECK
+
 
 	//создание объекта
 	Point A; //здесь неявно вызывается конструктор по умолчанию
@@ -94,5 +119,15 @@ void main()
 		
 	Point C(7, 8);
 	C.print();
+#endif 
+
+	Point A(2, 3);
+	Point B(7, 8);
+	A.print();
+	B.print();
+
+	cout << "Растояние от точки А до точки В" << A.distance(B)<< endl;
+	cout << "Растояние от точки B до точки A" << B.distance(A)<< endl;
+	cout << "Растояние между точками А и В" << distance(A, B)<< endl;
 
 }

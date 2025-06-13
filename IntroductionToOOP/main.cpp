@@ -96,7 +96,8 @@ public:
 
 };
 
-//функция
+
+//функция ЗА КЛАССОМ
 double distance(const Point& A, const Point& B)
 {
 	double x_distance = A.get_x() - B.get_x();
@@ -104,14 +105,14 @@ double distance(const Point& A, const Point& B)
 	return sqrt(x_distance * x_distance + y_distance * y_distance);
 }
 
-Point operator+(const Point& left, const Point& right)
+/*Point operator+(const Point& left, const Point& right)
 {
 	Point result;
 	result.set_x(left)
-}
+}*/
 
 //#define STRACT_POINT
-//#define DISTANCE_CHECK
+#define DISTANCE_CHECK
 //#define CONSTRUCTORS_CHECK
 //#define ASSIGMNET_CHECK
 
@@ -140,13 +141,13 @@ void main()
 	B.print();
 
 	cout << delimiter << endl;
-	cout << "Растояние от точки А до точки В" << A.distance(B)<< endl;
+	cout << "Растояние от точки А до точки В" << A.distance(B)<< endl;//вызов метода
 	cout << delimiter << endl;
-	cout << "Растояние от точки B до точки A" << B.distance(A)<< endl;
+	cout << "Растояние от точки B до точки A" << B.distance(A)<< endl;//вызов метода
 	cout << delimiter << endl;
-	cout << "Растояние между точками А и В" << distance(A, B)<< endl;
+	cout << "Растояние между точками А и В" << distance(A, B)<< endl; //вызов функции
 	cout << delimiter << endl;
-	cout << "Растояние между точками B и A" << distance(B, A)<< endl;
+	cout << "Растояние между точками B и A" << distance(B, A)<< endl; //вызов функции
 	cout << delimiter << endl;
 	cout << sizeof(Point) << endl;
 

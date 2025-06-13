@@ -27,7 +27,7 @@ public:
 		this->y = y;
 	}
 
-	// секция конструктор создание объекта
+	                           // секция конструктор создание объекта
 	//Point()
 	//{
 	//	x = y = 0;
@@ -44,10 +44,7 @@ public:
 		this->x = x;
 		this->y = y;
 		cout << "Constructor \t\t" << this << endl;
-
 	}
-
-
 
 	//конструктор копирования - для видения когда он вы
 	Point(const Point& other)
@@ -124,7 +121,7 @@ void main()
 	setlocale(LC_ALL, "");
 
 #ifdef STRACT_POINT
-	//создане объекта
+	//создане объекта//невно вызывается конструктор(создание объекта по умолчанию)
 	Point A;         //объявление переменной А типа Point// создание объекта А структруры Point
 	A.x = 2;
 	A.y = 3;
@@ -210,8 +207,7 @@ void main()
 
 	
 
-	Point A(2, 3);
-	Point B(4, 5);
+	/*Point B(4, 5);
 	Point C = A + B;
 	C.print();
 
@@ -219,4 +215,5 @@ void main()
 	{
 		i.print();
 	}
+	Point A(2, 3);*/
 }

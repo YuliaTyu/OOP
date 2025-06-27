@@ -1,4 +1,5 @@
-﻿#include<iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
 using namespace std;
 #define delimiter "\n----------------------------------------\n";
 
@@ -7,6 +8,8 @@ Fraction operator*(Fraction left, Fraction right);
 Fraction operator/(const Fraction& left, const Fraction& right);
 Fraction operator+(Fraction left, Fraction right);
 Fraction operator-(Fraction left, Fraction right);
+
+
 
 class Fraction
 {
@@ -47,12 +50,12 @@ public:
 		this->denominator = 0;
 		cout << "DefoultConstraction\t" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
 		this->denominator = 1;
-		cout << "Constructor\t\t" << this << endl;
+		cout << "SinglArgConstructor\t" << this << endl;
 	}
 	Fraction(int numerator, int denominator)
 	{
@@ -107,6 +110,7 @@ public:
 		return *this = *this - other;
 	}
 
+
 	//секция инкремент декремент
 	Fraction& operator++()  //префикс 
 	{
@@ -130,7 +134,17 @@ public:
 		integer--;
 		return old;
 	}
-	
+
+	// операторы преобразование типов
+	explicit operator int()const
+	{
+		return integer + numerator / denominator;
+	}
+	explicit operator double()const
+	{
+		return integer + (double)numerator / denominator;
+	}
+
 	//методы
 	Fraction& to_improper()
 	{
@@ -232,12 +246,18 @@ bool operator !=(const Fraction& left, const Fraction& right)
 }
 bool operator <=(Fraction left, Fraction right)
 {
+	//bool operator<=( const Fraction& left, const Fraction& right)
+	//return left < right || left == right;
+	//return !(left > right);
 	left.to_improper();
 	right.to_improper();
 	return left.get_numerator() * right.get_denomerator() <= right.get_numerator() * left.get_denomerator();
 }
 bool operator >=(Fraction left, Fraction right)
 {
+	//bool operator>=( const Fraction& left, const Fraction& right)
+	//return left > right || left == right;
+	//return !(left < right);
 	left.to_improper();
 	right.to_improper();
 	return left.get_numerator() * right.get_denomerator() >= right.get_numerator() * left.get_denomerator();
@@ -269,18 +289,42 @@ std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 	else if (obj.get_integer() == 0)os << 0;
 	return os;
 }
-/*std::ostream& operator>>(std::ostream& os, const Fraction& obj) процcес перегрузки оператора ввода >>
+std::istream& operator>>(std::istream& is, Fraction& obj) 
 {
-	if (obj.get_integer())os >> obj.get_integer();
-	if (obj.get_numerator())
+	const int SIZE = 32;
+	char sz_input[SIZE] = {};
+	//is >> sz_input; //sz - строка заканчивающаяся нулем
+	is.getline(sz_input, SIZE);//ввод строки с пробелами 
+	const char delimiters[] = { '(', '/', ')', ' ', '.', ',', 0};//Нулевой указатель всегда возвращается, когда в сканируемой строке достигается конец (т. е. нулевой символ).
+	int numbers[3] = {};
+	int n = 0;
+	for (char* pch = strtok(sz_input, delimiters); pch && n<3; pch = strtok(NULL, delimiters))
+		numbers[n ++] = atoi(pch);
+
+	//функция strtok разбивает строку на токены, для этой функции любая строка состоит из двух типов элементов - разделители (delimiters) это и симовлы по которым нужно делить строку
+	//и токены - это элеметы, которые нужно достать из строки(все что не разделители)
+	//при поиске strtok разделяет входную строку
+	//функия strtok находит все необходимые разделители не за один вызов, а за последовательность вызовов, 
+	//при чем входная строка передатся только при первом вызове
+	//при последующих вызовах - в качестве первого параметра передается NULL
+	//если при последующих вызовах переадавать строку strtok начинает посик сначала.
+	//функия strtok возвращает указатель на найденный токен, если токен не найден то функция возвращает nullptr;
+	//pch - содержит указатель на первый символ токена
+
+	//atoi() принимает строку ASCII to Integer, и возвращает целое число, соответсвующее этой строке.
+
+	//for (int i = 0; i < n; i++)cout << numbers[i] << "\t"; cout << endl;
+	
+	switch (n)
 	{
-		if (obj.get_integer())os << "(";
-		os >> obj.get_numerator() << "/" << obj.get_denomerator();
-		if (obj.get_integer())os << ")";
+	case 1:obj =Fraction (numbers[0]);break;
+	case 2:obj =Fraction (numbers[0],numbers[1]);break;
+	case 3:obj =Fraction (numbers[0],numbers[1],numbers[2]); break;
 	}
-	else if (obj.get_integer() == 0)os >> 0;
-	return os;
-}*/
+	
+	return is;
+	
+}
 
 
 
@@ -290,6 +334,8 @@ std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 //#define ARIFMETICAL_OPERATORS
 //#define INCREMENT_DECREMENT
 //#define COMP_OPERATOR
+//#define ISTREAM_OPERATOR
+//#define CONVERSION_FROM_OTHER_TO_CLASS
 
 void main()
 {
@@ -378,11 +424,36 @@ void main()
 
 #endif // COMP_OPERATOR
 
-
+ 
+#ifdef ISTREAM_OPERATOR
 
 	Fraction A;
 	cout << "Введите простую дробь"; cin >> A;
+	cout << delimiter;
+	cout << A << endl;
+	cout << delimiter;
 
+#endif //ISTREAM_OPERATOR 
+
+#ifdef CONVERSION_FROM_OTHER_TO_CLASS
+
+	Fraction A = (Fraction)5;
 	cout << A << endl;
 
+	Fraction B;
+	B = Fraction(8345);
+	cout << B << endl;
+#endif // #define CONVERSION_FROM_OTHER_TO_CLASS
+
+	Fraction A(2, 3, 4);
+	cout << A << endl;
+
+	int a = (int)A;
+	cout << a << endl;
+
+	double b = (double)A;
+	cout << b << endl;
+
+
 }
+

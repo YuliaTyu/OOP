@@ -57,6 +57,16 @@ public:
 		this->denominator = 1;
 		cout << "SinglArgConstructor\t" << this << endl;
 	}
+	Fraction(double decimal)
+	{
+	//decimal - десятичный 
+		decimal += 0.0000000001;// = 1e-10
+		integer = decimal; // неявное преобразование типов из double в int - сохраняем целую часть
+		decimal -= integer;
+		denominator = 1000000000;// 1e+9 = 1 000 000 000//максимально возможное значение в числителе (9 десятичных разрядов)
+		numerator = decimal * denominator;
+		reduce();
+	}
 	Fraction(int numerator, int denominator)
 	{
 		this->integer = 0;
@@ -180,6 +190,31 @@ public:
 		}
 		else if (integer == 0)cout << 0;
 		cout << endl;
+	}
+
+	Fraction& reduce()
+	{
+		int more, less, rest;
+		if (numerator < denominator)
+		{
+			less = numerator;
+			more = denominator;
+		}
+		else
+		{
+			more = numerator;
+			less = denominator;
+		}
+		do
+		{
+			rest = more % less;
+			more = less;
+			less = rest;
+		} while (rest);
+		int GCD = more;
+		numerator /= GCD;
+		denominator /= GCD;
+		return *this;
 	}
 
 };
@@ -336,6 +371,7 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define COMP_OPERATOR
 //#define ISTREAM_OPERATOR
 //#define CONVERSION_FROM_OTHER_TO_CLASS
+//#define CONVERSION_FROM_CLASS_TO_OTHER
 
 void main()
 {
@@ -445,6 +481,10 @@ void main()
 	cout << B << endl;
 #endif // #define CONVERSION_FROM_OTHER_TO_CLASS
 
+
+#ifdef CONVERSION_FROM_CLASS_TO_OTHER
+
+
 	Fraction A(2, 3, 4);
 	cout << A << endl;
 
@@ -453,6 +493,10 @@ void main()
 
 	double b = (double)A;
 	cout << b << endl;
+#endif //CONVERSION_FROM_CLASS_TO_OTHER
+
+	Fraction A = 2.76;
+	cout << A << endl;
 
 
 }

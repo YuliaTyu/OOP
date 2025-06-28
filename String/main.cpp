@@ -1,6 +1,10 @@
 ﻿#include<iostream>
 using namespace std;
 
+using std::cin;
+using std::cout;
+using std::endl;
+
 class String
 {
 	int size;  //размер строки в байтах 
@@ -11,6 +15,10 @@ public:
 		return size;
 	}
 	const char* get_str() const // гарантия что на месте вызова не изменится значение
+	{
+		return str;
+	}
+	char* get_str() 
 	{
 		return str;
 	}
@@ -25,6 +33,7 @@ public:
 	}
 	String(const char str[])
 	{
+		size = 0;
 		while(str[size++]);
 			this->str = new char[size] {};
 			for (int i = 0; str[i]; i++)
@@ -61,26 +70,49 @@ public:
 		cout << "CopyAssignment\t" << this << endl;
 		return *this;
 	}
+	char operator[](int i)const
+	{
+		return str[i];
+	}
+	char& operator[](int i)
+	{
+		return str[i];
+	}
 
 	//методы 
 	void info() const
 	{
 		cout << "Size\t" << size << endl;
 		cout << "Str\t" << str << endl;
-
 	}
 
 };
 
+String operator+(const String& left, const String& right)
+{
+	String result(left.get_size() + right.get_size() - 1);
+	for (int i = 0; left.get_str()[i]; i++)
+		//result.get_str()[i] = left.get_str()[i];
+		result[i] = left[i];
+	for (int i = 0; right.get_str()[i]; i++)
+		//result.get_str()[left.get_size() - 1 + i] = right.get_str()[i];
+		result[left.get_size() - 1 + i] = right[i];
+	return result;
+}
 
 std::ostream& operator<<(std::ostream& os, const String& obj)
 {
 	return os << obj.get_str();
 }
 
+//#define CONSTRUCTORS_CHECK
+
 void main()
 {
 	setlocale(LC_ALL, "");
+
+#ifdef CONSTRUCTORS_CHECK
+
 
 	String str1 (5);//explicit-конструктор можно вызвать при помощи круглых скобок
 	str1.info();
@@ -97,5 +129,13 @@ void main()
 	String str4;
 	str4 = str3;
 	cout << str4 << endl;
+
+
+#endif // #define CONSTRUCTORS_CHECK
+
+	String str1 = "Hello";
+	String str2 = "World";
+	String str3 = str1 + " " + str2;
+	cout << str3 << endl;
 
 }

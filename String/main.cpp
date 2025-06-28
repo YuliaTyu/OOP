@@ -6,6 +6,8 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+#define delimiter "\n------------------------------\n"
+
 class String
 {
 	int size;  //размер строки в байтах 
@@ -49,7 +51,15 @@ public:
 		this->size = other.size;
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
-		cout << "CopyConstructor\t" << this << endl;
+		cout << "CopyConstructor\t\t" << this << endl;
+	}
+	String(String&& other)
+	{
+		this->size = other.size;
+		this->str = other.str;
+		other.size = 0;
+		other.str = nullptr; //защищаем память от удаления деструктором
+		cout << "MoveConstructor\t\t" << this << endl;
 	}
 
 	~String()
@@ -70,6 +80,18 @@ public:
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyAssignment\t" << this << endl;
 		return *this;
+	}
+	String& operator=(String&& other)
+	{
+		if (this == &other)return *this;
+		delete[] this->str;
+		this->size = other.size;
+		this->str = other.str;
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveAssignment\t\t" << this << endl;
+		return *this;
+
 	}
 	char operator[](int i)const
 	{
@@ -98,6 +120,7 @@ String operator+(const String& left, const String& right)
 	for (int i = 0; right.get_str()[i]; i++)
 		//result.get_str()[left.get_size() - 1 + i] = right.get_str()[i];
 		result[left.get_size() - 1 + i] = right[i];
+	cout << "Operator +" << endl;
 	return result;
 }
 
@@ -125,6 +148,7 @@ std::istream& getline(std::istream& cin, String& obj)
 
 //#define CONSTRUCTORS_CHECK
 //#define OPERATOR_PLUS
+//#define ISTREAM_OPERATOR
 
 void main()
 {
@@ -157,11 +181,18 @@ void main()
 
 	String str1 = "Hello";
 	String str2 = "World";
-	String str3 = str1 + " " + str2;
+	cout << delimiter << endl;
+	String str3 = str1 + str2;
+	cout << delimiter << endl;
 	cout << str3 << endl;
+	cout << delimiter << endl;
+	
+
+
 
 #endif // OPERATOR_PLUS
 
+#ifdef ISTREAM_OPERATOR
 
 	String str;
 	cout << "Введите строку";
@@ -171,5 +202,8 @@ void main()
 	getline(cin, str);
 	SetConsoleCP(866);
 	cout << str << endl;
+#endif // #define ISTREAM_OPERATOR
+
+
 
 }

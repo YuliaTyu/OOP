@@ -47,7 +47,7 @@ public:
 	{
 		this->integer = 0;
 		this->numerator = 0;
-		this->denominator = 0;
+		this->denominator = 1;
 		cout << "DefoultConstraction\t" << this << endl;
 	}
 	explicit Fraction(int integer)
@@ -71,7 +71,7 @@ public:
 	{
 		this->integer = 0;
 		this->numerator = numerator;
-		this->set_denominator(denominator);
+		set_denominator(denominator);
 		cout << "Constructor\t\t" << this << endl;
 	}
 	Fraction(int integer, int numerator, int denominator)
@@ -156,15 +156,14 @@ public:
 	}
 
 	//методы
-	Fraction& to_improper()
+	Fraction& to_improper() // перевод в неправильную дробь
 	{
-		//переводим дробь в неправильную
 		numerator += integer * denominator;
 		integer = 0;
 		return *this;
 	}
 
-	Fraction& to_proper()
+	Fraction& to_proper() // перевод в правильную дробь (выделить целую часть)
 	{
 		integer += numerator / denominator;
 		numerator %= denominator;
@@ -237,6 +236,7 @@ Fraction operator*(Fraction left, Fraction right)
 		left.get_numerator() * right.get_numerator(),
 		left.get_denomerator() * right.get_denomerator()
 	);
+	result.to_proper();
 	return result;*/
 
 	return Fraction
@@ -366,7 +366,7 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 
 //#define CONSTRUCTORS_CHECK
 //#define ASSIGNMENT_CHECK
-//#define ARIFMETICAL_OPERATORS
+#define ARIFMETICAL_OPERATORS
 //#define INCREMENT_DECREMENT
 //#define COMP_OPERATOR
 //#define ISTREAM_OPERATOR
@@ -380,11 +380,11 @@ void main()
 #ifdef CONSTRUCTORS_CHECK
 
 
-	Fraction A;         //конс без параметров
-	A.print();
+	//Fraction A;         //конс без параметров (defoult constructor)
+	//A.print();
 
-	Fraction B=5;       // конст с одним параметром
-	B.print();
+	//Fraction B=5;       // конст с одним параметром (singl - argument constructor)
+	//B.print();
 
 	Fraction C(1, 2);  //конст с параметрами
 	C.print();
@@ -420,7 +420,7 @@ void main()
 
 	Fraction A(1, 2);
 	Fraction B(2, 3, 4);
-	Fraction C = A - B;
+	Fraction C = A * B;
 	A.print();
 	B.print();
 	C.print();
@@ -495,8 +495,8 @@ void main()
 	cout << b << endl;
 #endif //CONVERSION_FROM_CLASS_TO_OTHER
 
-	Fraction A = 2.76;
-	cout << A << endl;
+	//Fraction A = 2.76;
+	//cout << A << endl;
 
 
 }

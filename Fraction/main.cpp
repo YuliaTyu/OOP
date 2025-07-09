@@ -3,6 +3,10 @@
 using namespace std;
 #define delimiter "\n----------------------------------------\n";
 
+using std::cout;
+using std::cin;
+using std::endl;
+
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
 Fraction operator/(const Fraction& left, const Fraction& right);
@@ -50,7 +54,7 @@ public:
 		this->denominator = 1;
 		cout << "DefoultConstraction\t" << this << endl;
 	}
-	explicit Fraction(int integer)
+	explicit Fraction(int integer) // запрещает неявные преобразования
 	{
 		this->integer = integer;
 		this->numerator = 0;
@@ -146,7 +150,7 @@ public:
 	}
 
 	// операторы преобразование типов
-	explicit operator int()const
+	explicit operator int()const //метод константный - не изменяет объект для которого вызывается
 	{
 		return integer + numerator / denominator;
 	}
@@ -371,13 +375,13 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define ISTREAM_OPERATOR
 //#define CONVERSION_FROM_OTHER_TO_CLASS
 //#define CONVERSION_FROM_CLASS_TO_OTHER
+#define HAVE_A_NICE_DAY
 
 void main()
 {
 	setlocale(LC_ALL, "");
 
 #ifdef CONSTRUCTORS_CHECK
-
 
 	//Fraction A;         //конс без параметров (defoult constructor)
 	//A.print();
@@ -402,7 +406,6 @@ void main()
 
 #ifdef ASSIGNMENT_CHECK
 
-
 	int a, b, c;
 	a = b = c = 0;
 	cout << a << "\t" << b << "\t" << c << endl;
@@ -415,7 +418,6 @@ void main()
 #endif // ASSIGNMENT_CHECK
 
 #ifdef ARIFMETICAL_OPERATORS
-
 
 	Fraction A(2, 3, 4);
 	Fraction B(3, 4, 5);
@@ -433,17 +435,14 @@ void main()
 	
 #ifdef INCREMENT_DECREMENT
 
-
 	Fraction A(1, 2);
 	Fraction B = ++A++;
 	A.print();
 	B.print();
 
-
 #endif // INCREMENT_DECREMENT
 
 #ifdef COMP_OPERATOR
-
 
 	cout << (Fraction(1, 2) == Fraction(5, 10)) << endl;
 
@@ -458,7 +457,6 @@ void main()
 	cout << (Fraction(1, 3) > Fraction(5, 10)) << endl;
 
 #endif // COMP_OPERATOR
-
  
 #ifdef ISTREAM_OPERATOR
 
@@ -480,9 +478,7 @@ void main()
 	cout << B << endl;
 #endif // #define CONVERSION_FROM_OTHER_TO_CLASS
 
-
 #ifdef CONVERSION_FROM_CLASS_TO_OTHER
-
 
 	Fraction A(2, 3, 4);
 	cout << A << endl;
@@ -492,10 +488,15 @@ void main()
 
 	double b = (double)A;
 	cout << b << endl;
+
 #endif //CONVERSION_FROM_CLASS_TO_OTHER
 
-	//Fraction A = 2.76;
-	//cout << A << endl;
+#ifdef HAVE_A_NICE_DAY
+
+	Fraction A = 2.76;
+	cout << A << endl;
+
+#endif // HAVE_A_NICE_DAY
 
 
 }

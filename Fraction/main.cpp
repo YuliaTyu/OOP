@@ -251,15 +251,13 @@ Fraction operator/(const Fraction& left, const Fraction& right)
 }
 Fraction operator+(Fraction left, Fraction right)    //целая часть?
 {
-	/*return Fraction
+	left.to_improper();
+	right.to_improper();
+	return Fraction
 	(
-		left.get_numerator() + right.get_numerator(),
-		left.get_denomerator() + right.get_denomerator()
-	).to_proper();*/
-	Fraction result;
-	result.set_numerator(left.get_numerator() + right.get_numerator());
-	result.set_denominator(left.get_denomerator() + right.get_denomerator());
-	return result;
+		left.get_numerator() * right.get_denomerator() + right.get_numerator() * left.get_denomerator(),
+		left.get_denomerator() * right.get_denomerator()
+	).to_proper();
 }
 Fraction operator-(Fraction left, Fraction right)        //целая часть?
 {
@@ -366,9 +364,9 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 
 //#define CONSTRUCTORS_CHECK
 //#define ASSIGNMENT_CHECK
-#define ARIFMETICAL_OPERATORS
+//#define ARIFMETICAL_OPERATORS
 //#define INCREMENT_DECREMENT
-//#define COMP_OPERATOR
+#define COMP_OPERATOR
 //#define ISTREAM_OPERATOR
 //#define CONVERSION_FROM_OTHER_TO_CLASS
 //#define CONVERSION_FROM_CLASS_TO_OTHER
@@ -418,9 +416,9 @@ void main()
 #ifdef ARIFMETICAL_OPERATORS
 
 
-	Fraction A(1, 2);
-	Fraction B(2, 3, 4);
-	Fraction C = A * B;
+	Fraction A(2, 3, 4);
+	Fraction B(3, 4, 5);
+	Fraction C = A + B;
 	A.print();
 	B.print();
 	C.print();

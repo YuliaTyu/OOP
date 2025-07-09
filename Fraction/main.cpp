@@ -309,7 +309,8 @@ bool operator >(Fraction left, Fraction right)
 }
 
 
-
+//потоки всегда передаются по ссылке !!!! потоки нельзя дублировать
+//ассоциативность слева направо
 std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 {
 	if (obj.get_integer())os << obj.get_integer();
@@ -366,7 +367,7 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define ASSIGNMENT_CHECK
 //#define ARIFMETICAL_OPERATORS
 //#define INCREMENT_DECREMENT
-#define COMP_OPERATOR
+//#define COMP_OPERATOR
 //#define ISTREAM_OPERATOR
 //#define CONVERSION_FROM_OTHER_TO_CLASS
 //#define CONVERSION_FROM_CLASS_TO_OTHER
@@ -434,7 +435,7 @@ void main()
 
 
 	Fraction A(1, 2);
-	Fraction B = A--;
+	Fraction B = ++A++;
 	A.print();
 	B.print();
 

@@ -36,6 +36,7 @@ public:
 	}
 	String(const char str[])
 	{
+		cout << typeid(str).name() << endl;
 		size = 0;
 		while(str[size++]);
 			this->str = new char[size] {};
@@ -186,9 +187,6 @@ void main()
 	cout << delimiter << endl;
 	cout << str3 << endl;
 	cout << delimiter << endl;
-	
-
-
 
 #endif // OPERATOR_PLUS
 
@@ -203,6 +201,28 @@ void main()
 	SetConsoleCP(866);
 	cout << str << endl;
 #endif // #define ISTREAM_OPERATOR
+
+	String str1;//к-р по умолчанию
+	str1.info();
+
+	String str2(8);//к-р с одним параметром
+	str2.info();
+
+	String str3 = "Hello";//к-р по умолчанию const char - указатель на конструктор
+	str3.info();
+
+	cout << typeid("Hello").name()<< endl;
+
+	String str4();//никакой к-р - объявление функции, кот не принимает, но возвращает объект типа String
+	//в теле функции нельзя вызывать другую функцию
+	//str.4
+
+	String str5(8);    //создание строки 8 байт
+	String str6{ 8 }; //создание строки 8 байт - инициали в стиле с++
+	String str7{};    //явный вызов к-ра по умолчанию
+
+	String str9 = str3; //к-р копирования
+
 
 
 

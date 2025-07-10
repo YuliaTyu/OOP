@@ -28,38 +28,40 @@ public:
 
 	//конструкторы
 
-	explicit String(int size = 80)
+	explicit String(int size = 80):size(size),str(new char[this->size]{})//1size - перем члена класса, 2size - принимаемый пар-тр
 	{
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		//this->str = new char[size] {};//УТЕЧКА ПАМЯТИ - если в заголовке выделили память - поэтому удалить!!!!
 		cout << "DefaultConstruction\t" << this << endl;
 	}
-	String(const char str[])
+	String(const char str[]):size(strlen(str)+1), str(new char[size]{})
 	{
 		cout << typeid(str).name() << endl;
-		size = 0;
-		while(str[size++]);
-			this->str = new char[size] {};
+		//size = 0;
+		//while(str[size++]);
+			//this->str = new char[size] {};
 			for (int i = 0; str[i]; i++)
 			this->str[i] = str[i];
 		cout << "Constuctor\t\t" << this << endl;
 	}
 
+
 	//конструктор копирования DeepCopy - ПОБИТОВОЕ КОПИРОВАНИЕ - т е выделять дин память под объект и побитово
 	// поэлементно копировать содержимое динам памяти из существующего объекта в создаваемый
-	String(const String& other)
+	String(const String& other):size(other.size),str(new char[size]{})
 	{
-		this->size = other.size;
-		this->str = new char[size] {};
+		//this->size = other.size;
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor\t\t" << this << endl;
 	}
-	String(String&& other)
+
+	String(String&& other):size(other.size), str(other.str)   //К-р переноса НЕЛЬЗЯ ДЕЛЕГИРОВАТЬ - так как не выделяет память!
 	{
-		this->size = other.size;
-		this->str = other.str;
+		//this->size = other.size;
+		//this->str = other.str;
 		other.size = 0;
-		other.str = nullptr; //защищаем память от удаления деструктором
+		other.str = nullptr; //защищаем память от удаления деструктором - суть к-ра переноса!!!!!!
 		cout << "MoveConstructor\t\t" << this << endl;
 	}
 
@@ -148,8 +150,9 @@ std::istream& getline(std::istream& cin, String& obj)
 
 
 //#define CONSTRUCTORS_CHECK
-//#define OPERATOR_PLUS
+#define OPERATOR_PLUS
 //#define ISTREAM_OPERATOR
+//#define CALLING_CONSTRUCTORS
 
 void main()
 {
@@ -202,6 +205,8 @@ void main()
 	cout << str << endl;
 #endif // #define ISTREAM_OPERATOR
 
+#ifdef CALLING_CONSTRUCTORS
+
 	String str1;//к-р по умолчанию
 	str1.info();
 
@@ -222,7 +227,9 @@ void main()
 	String str7{};    //явный вызов к-ра по умолчанию
 
 	String str9 = str3; //к-р копирования
+	str9.info();
 
+#endif // CALLING_CONSTRUCTORS
 
 
 

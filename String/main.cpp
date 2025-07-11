@@ -26,40 +26,29 @@ public:
 		return str;
 	}
 
-	//конструкторы
-
+	                  ////////конструкторы////////
+					  
+	//к-р по умолчанию выделил память остальные к-ры выполняют за него всю работу (ДЕЛЕГИРОВАНИЕ)
 	explicit String(int size = 80):size(size),str(new char[this->size]{})//1size - перем члена класса, 2size - принимаемый пар-тр
 	{
-		//this->size = size;
-		//this->str = new char[size] {};//УТЕЧКА ПАМЯТИ - если в заголовке выделили память - поэтому удалить!!!!
 		cout << "DefaultConstruction\t" << this << endl;
 	}
-	String(const char str[]):size(strlen(str)+1), str(new char[size]{})
+
+	String(const char str[]):String(strlen(str) + 1)//к-р char вызывает к-р по умолчанию
 	{
-		cout << typeid(str).name() << endl;
-		//size = 0;
-		//while(str[size++]);
-			//this->str = new char[size] {};
-			for (int i = 0; str[i]; i++)
-			this->str[i] = str[i];
+		for (int i = 0; str[i]; i++)
+		this->str[i] = str[i];
 		cout << "Constuctor\t\t" << this << endl;
 	}
 
-
-	//конструктор копирования DeepCopy - ПОБИТОВОЕ КОПИРОВАНИЕ - т е выделять дин память под объект и побитово
-	// поэлементно копировать содержимое динам памяти из существующего объекта в создаваемый
-	String(const String& other):size(other.size),str(new char[size]{})
+	//конструктор копирования DeepCopy 
+	String(const String& other):String(other.str)// вызывает к-р типа char 
 	{
-		//this->size = other.size;
-		//this->str = new char[size] {};
-		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor\t\t" << this << endl;
 	}
 
-	String(String&& other):size(other.size), str(other.str)   //К-р переноса НЕЛЬЗЯ ДЕЛЕГИРОВАТЬ - так как не выделяет память!
+	String(String&& other):size(other.size), str(other.str) //К-р переноса НЕЛЬЗЯ ДЕЛЕГИРОВАТЬ - так как не выделяет память!
 	{
-		//this->size = other.size;
-		//this->str = other.str;
 		other.size = 0;
 		other.str = nullptr; //защищаем память от удаления деструктором - суть к-ра переноса!!!!!!
 		cout << "MoveConstructor\t\t" << this << endl;
@@ -190,6 +179,9 @@ void main()
 	cout << delimiter << endl;
 	cout << str3 << endl;
 	cout << delimiter << endl;
+	String str4 = str3;
+	cout << delimiter << endl;
+	cout << str4 << endl;
 
 #endif // OPERATOR_PLUS
 

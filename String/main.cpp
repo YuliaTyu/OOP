@@ -8,6 +8,11 @@ using std::endl;
 
 #define delimiter "\n------------------------------\n"
 
+       ///////Объявление класса /////////
+
+class String;
+String operator+(const String& left, const String& right);
+
 class String
 {
 	int size;  //размер строки в байтах 
@@ -26,9 +31,10 @@ public:
 	String(String&& other);
 	~String();
 
-	//оператор присваивания
+	//оператор 
 	String& operator=(const String& other);
 	String& operator=(String&& other);
+	String& operator+=(const String& other);
 	char operator[](int i)const;
 	char& operator[](int i);
 
@@ -37,7 +43,11 @@ public:
 
 };
 
+/////// конец объявления класса /////////
 
+//////////////////-------------------------------------------//////////////////
+
+/////// определение класса///////////////////
 int String::get_size()const
 {
 	return size;
@@ -110,6 +120,10 @@ String& String::operator=(String&& other)
 	return *this;
 
 }
+String& String::operator+=(const String& other)
+{
+	return *this = *this + other;
+}
 char String::operator[](int i)const
 {
 	return str[i];
@@ -125,6 +139,8 @@ void String::info() const
 	cout << "Size\t" << size << endl;
 	cout << "Str\t" << str << endl;
 }
+
+
 
 //глобальная функция!!! не надо писать String ::
 String operator+(const String& left, const String& right)
@@ -160,6 +176,9 @@ std::istream& getline(std::istream& cin, String& obj)
 	cin.getline(obj.get_str(), obj.get_size());
 	return cin;
 }
+
+/////// конец определения класса///////////////////
+
 
 
 //#define CONSTRUCTORS_CHECK

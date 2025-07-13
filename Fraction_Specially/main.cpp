@@ -14,214 +14,255 @@ Fraction operator/(const Fraction& left, const Fraction& right);
 Fraction operator+(Fraction left, Fraction right);
 Fraction operator-(Fraction left, Fraction right);
 
-
-
 class Fraction
 {
 	int integer;             //целая часть
 	int numerator;           //числитель
 	int denominator;         //знаменатель
 public:
-	int get_integer()const
-	{
-		return integer;
-	}
-	int get_numerator() const
-	{
-		return numerator;
-	}
-	int get_denomerator()const
-	{
-		return denominator;
-	}
-	void set_integer(int integer)
-	{
-		this->integer = integer;
-	}
-	void set_numerator(int numerator)
-	{
-		this->numerator = numerator;
-	}
-	void set_denominator(int denominator)
-	{
-		if (denominator == 0)denominator = 1;
-		this->denominator = denominator;
-	}
+	int get_integer()const;
+	int get_numerator() const;
+	int get_denomerator()const;
+	void set_integer(int integer);
+	void set_numerator(int numerator);
+	void set_denominator(int denominator);
+
 	//секция конструкторы
-	Fraction()
-	{
-		this->integer = 0;
-		this->numerator = 0;
-		this->denominator = 1;
-		cout << "DefoultConstraction\t" << this << endl;
-	}
-	explicit Fraction(int integer) // запрещает неявные преобразования
-	{
-		this->integer = integer;
-		this->numerator = 0;
-		this->denominator = 1;
-		cout << "SinglArgConstructor\t" << this << endl;
-	}
-	Fraction(double decimal)
-	{
-		//decimal - десятичный 
-		decimal += 0.0000000001;// = 1e-10
-		integer = decimal; // неявное преобразование типов из double в int - сохраняем целую часть
-		decimal -= integer;
-		denominator = 1000000000;// 1e+9 = 1 000 000 000//максимально возможное значение в числителе (9 десятичных разрядов)
-		numerator = decimal * denominator;
-		reduce();
-	}
-	Fraction(int numerator, int denominator)
-	{
-		this->integer = 0;
-		this->numerator = numerator;
-		set_denominator(denominator);
-		cout << "Constructor\t\t" << this << endl;
-	}
-	Fraction(int integer, int numerator, int denominator)
-	{
-		set_integer(integer);
-		set_numerator(numerator);
-		set_denominator(denominator);
-		cout << "Constructor\t\t" << this << endl;
-	}
-	Fraction(const Fraction& other)  // конструктор копирования
-	{
-		this->integer = other.integer;
-		this->numerator = other.numerator;
-		this->denominator = other.denominator;
-		cout << "CopyConstructor\t\t" << this << endl;
-	}
-	~Fraction()
-	{
-		cout << "Destuctor\t\t" << this << endl;
-	}
+	Fraction();
+	explicit Fraction(int integer);
+	Fraction(double decimal);
+	Fraction(int numerator, int denominator);
+	Fraction(int integer, int numerator, int denominator);
+	Fraction(const Fraction& other);
+	~Fraction();
 
 	//оператор присваивания
-	Fraction& operator=(const Fraction& other)
-	{
-		this->integer = other.integer;
-		this->numerator = other.numerator;
-		this->denominator = other.denominator;
-		cout << "CopyAssignment\t\t" << this << endl;
-		return *this;
-	}
-
-	Fraction& operator*=(const Fraction& other)
-	{
-		return *this = *this * other;
-	}
-	Fraction& operator/=(const Fraction& other)
-	{
-		return *this = *this / other;
-	}
-	Fraction& operator+=(const Fraction& other) //целая часть?
-	{
-		return *this = *this + other;
-	}
-	Fraction& operator-=(const Fraction& other) //целая часть?
-	{
-		return *this = *this - other;
-	}
-
+	Fraction& operator=(const Fraction& other);
+	Fraction& operator*=(const Fraction& other);
+	Fraction& operator/=(const Fraction& other);
+	Fraction& operator+=(const Fraction& other);
+	Fraction& operator-=(const Fraction& other);
 
 	//секция инкремент декремент
-	Fraction& operator++()  //префикс 
-	{
-		integer++;
-		return *this;
-	}
-	Fraction operator++(int)  //постфикс
-	{
-		Fraction old = *this; //создание локальной переменной для возврата в функцию
-		integer++;
-		return old;
-	}
-	Fraction& operator--()  //префикс 
-	{
-		integer--;
-		return *this;
-	}
-	Fraction operator--(int)  //постфикс
-	{
-		Fraction old = *this; //создание локальной переменной для возврата в функцию
-		integer--;
-		return old;
-	}
+	Fraction& operator++();
+	Fraction operator++(int);
+	Fraction& operator--();
+	Fraction operator--(int);
 
 	// операторы преобразование типов
-	explicit operator int()const //метод константный - не изменяет объект для которого вызывается
-	{
-		return integer + numerator / denominator;
-	}
-	explicit operator double()const
-	{
-		return integer + (double)numerator / denominator;
-	}
+	explicit operator int()const;
+	explicit operator double()const;
 
 	//методы
-	Fraction& to_improper() // перевод в неправильную дробь
-	{
-		numerator += integer * denominator;
-		integer = 0;
-		return *this;
-	}
+	Fraction& to_improper();
+	Fraction& to_proper();
+	Fraction inverted()const;
 
-	Fraction& to_proper() // перевод в правильную дробь (выделить целую часть)
-	{
-		integer += numerator / denominator;
-		numerator %= denominator;
-		return *this;
-	}
+	void print()const;
 
-	Fraction inverted()const
-	{
-		Fraction inverted = *this;
-		inverted.to_improper();
-		swap(inverted.numerator, inverted.denominator);
-		return inverted;
-	}
-
-	void print()const
-	{
-		if (integer)cout << integer;
-		if (numerator)
-		{
-			if (integer)cout << "(";
-			cout << numerator << "/" << denominator;
-			if (integer)cout << ")";
-		}
-		else if (integer == 0)cout << 0;
-		cout << endl;
-	}
-
-	Fraction& reduce()
-	{
-		int more, less, rest;
-		if (numerator < denominator)
-		{
-			less = numerator;
-			more = denominator;
-		}
-		else
-		{
-			more = numerator;
-			less = denominator;
-		}
-		do
-		{
-			rest = more % less;
-			more = less;
-			less = rest;
-		} while (rest);
-		int GCD = more;
-		numerator /= GCD;
-		denominator /= GCD;
-		return *this;
-	}
-
+	Fraction& reduce();
 };
+
+
+int Fraction:: get_integer()const
+{
+	return integer;
+}
+int Fraction:: get_numerator() const
+{
+	return numerator;
+}
+int Fraction:: get_denomerator()const
+{
+	return denominator;
+}
+void Fraction:: set_integer(int integer)
+{
+	this->integer = integer;
+}
+void Fraction:: set_numerator(int numerator)
+{
+	this->numerator = numerator;
+}
+void Fraction:: set_denominator(int denominator)
+{
+	if (denominator == 0)denominator = 1;
+	this->denominator = denominator;
+}
+//секция конструкторы
+Fraction:: Fraction()
+{
+	this->integer = 0;
+	this->numerator = 0;
+	this->denominator = 1;
+	cout << "DefoultConstraction\t" << this << endl;
+}
+Fraction:: Fraction(int integer) // запрещает неявные преобразования
+{
+	this->integer = integer;
+	this->numerator = 0;
+	this->denominator = 1;
+	cout << "SinglArgConstructor\t" << this << endl;
+}
+Fraction:: Fraction(double decimal)
+{
+	//decimal - десятичный 
+	decimal += 0.0000000001;// = 1e-10
+	integer = decimal; // неявное преобразование типов из double в int - сохраняем целую часть
+	decimal -= integer;
+	denominator = 1000000000;// 1e+9 = 1 000 000 000//максимально возможное значение в числителе (9 десятичных разрядов)
+	numerator = decimal * denominator;
+	reduce();
+}
+Fraction:: Fraction(int numerator, int denominator)
+{
+	this->integer = 0;
+	this->numerator = numerator;
+	set_denominator(denominator);
+	cout << "Constructor\t\t" << this << endl;
+}
+Fraction:: Fraction(int integer, int numerator, int denominator)
+{
+	set_integer(integer);
+	set_numerator(numerator);
+	set_denominator(denominator);
+	cout << "Constructor\t\t" << this << endl;
+}
+Fraction:: Fraction(const Fraction& other)  // конструктор копирования
+{
+	this->integer = other.integer;
+	this->numerator = other.numerator;
+	this->denominator = other.denominator;
+	cout << "CopyConstructor\t\t" << this << endl;
+}
+Fraction:: ~Fraction()
+{
+	cout << "Destuctor\t\t" << this << endl;
+}
+
+//оператор присваивания
+Fraction& Fraction:: operator=(const Fraction& other)
+{
+	this->integer = other.integer;
+	this->numerator = other.numerator;
+	this->denominator = other.denominator;
+	cout << "CopyAssignment\t\t" << this << endl;
+	return *this;
+}
+
+Fraction& Fraction:: operator*=(const Fraction& other)
+{
+	return *this = *this * other;
+}
+Fraction& Fraction:: operator/=(const Fraction& other)
+{
+	return *this = *this / other;
+}
+Fraction& Fraction:: operator+=(const Fraction& other) //целая часть?
+{
+	return *this = *this + other;
+}
+Fraction& Fraction:: operator-=(const Fraction& other) //целая часть?
+{
+	return *this = *this - other;
+}
+
+
+//секция инкремент декремент
+Fraction& Fraction:: operator++()  //префикс 
+{
+	integer++;
+	return *this;
+}
+Fraction Fraction:: operator++(int)  //постфикс
+{
+	Fraction old = *this; //создание локальной переменной для возврата в функцию
+	integer++;
+	return old;
+}
+Fraction& Fraction:: operator--()  //префикс 
+{
+	integer--;
+	return *this;
+}
+Fraction Fraction:: operator--(int)  //постфикс
+{
+	Fraction old = *this; //создание локальной переменной для возврата в функцию
+	integer--;
+	return old;
+}
+
+// операторы преобразование типов
+Fraction:: operator int()const //метод константный - не изменяет объект для которого вызывается
+{
+	return integer + numerator / denominator;
+}
+Fraction:: operator double()const
+{
+	return integer + (double)numerator / denominator;
+}
+
+//методы
+Fraction& Fraction:: to_improper() // перевод в неправильную дробь
+{
+	numerator += integer * denominator;
+	integer = 0;
+	return *this;
+}
+
+Fraction& Fraction:: to_proper() // перевод в правильную дробь (выделить целую часть)
+{
+	integer += numerator / denominator;
+	numerator %= denominator;
+	return *this;
+}
+
+Fraction Fraction:: inverted()const
+{
+	Fraction inverted = *this;
+	inverted.to_improper();
+	swap(inverted.numerator, inverted.denominator);
+	return inverted;
+}
+
+void Fraction:: print()const
+{
+	if (integer)cout << integer;
+	if (numerator)
+	{
+		if (integer)cout << "(";
+		cout << numerator << "/" << denominator;
+		if (integer)cout << ")";
+	}
+	else if (integer == 0)cout << 0;
+	cout << endl;
+}
+
+Fraction& Fraction:: reduce()
+{
+	int more, less, rest;
+	if (numerator < denominator)
+	{
+		less = numerator;
+		more = denominator;
+	}
+	else
+	{
+		more = numerator;
+		less = denominator;
+	}
+	do
+	{
+		rest = more % less;
+		more = less;
+		less = rest;
+	} while (rest);
+	int GCD = more;
+	numerator /= GCD;
+	denominator /= GCD;
+	return *this;
+}
+
 
 
 
@@ -314,8 +355,6 @@ bool operator >(Fraction left, Fraction right)
 }
 
 
-//потоки всегда передаются по ссылке !!!! потоки нельзя дублировать
-//ассоциативность слева направо
 std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 {
 	if (obj.get_integer())os << obj.get_integer();

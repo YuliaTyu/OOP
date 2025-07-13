@@ -8,11 +8,22 @@ using std::cout;
 using std::cin;
 using std::endl;
 
+////////////////////ОБЪЯВЛЕНИЕ КЛАССА////////////////////////
+
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
 Fraction operator/(const Fraction& left, const Fraction& right);
 Fraction operator+(Fraction left, Fraction right);
 Fraction operator-(Fraction left, Fraction right);
+bool operator ==(Fraction left, Fraction right);
+bool operator !=(const Fraction& left, const Fraction& right);
+bool operator <=(Fraction left, Fraction right);
+bool operator >=(Fraction left, Fraction right);
+bool operator <(Fraction left, Fraction right);
+bool operator >(Fraction left, Fraction right);
+std::ostream& operator<<(std::ostream& os, const Fraction& obj);
+std::istream& operator>>(std::istream& is, Fraction& obj);
+
 
 class Fraction
 {
@@ -62,8 +73,10 @@ public:
 
 	Fraction& reduce();
 };
+/////////////////КОНЕЦ ОБЪЯВЛЕНИЯ КЛАССА//////////////////////////////
+//-----------------------------------------------------------------//
 
-
+////////////////ОПРЕДЕЛЕНИЕ КЛАССА///////////////////////////////////
 int Fraction:: get_integer()const
 {
 	return integer;
@@ -265,7 +278,6 @@ Fraction& Fraction:: reduce()
 
 
 
-
 //перегрука операторов - ФУНКЦИИ
 Fraction operator*(Fraction left, Fraction right)
 {
@@ -404,7 +416,7 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 
 }
 
-
+//////////////////КОНЕЦ ОПРЕДЕЛЕНИЯ КЛАССА//////////////////////////
 
 
 //#define CONSTRUCTORS_CHECK

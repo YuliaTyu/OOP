@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 using namespace std;
 
 using std::cin;
@@ -9,14 +9,14 @@ using std::endl;
 
 class String
 {
-	int size;  //размер строки в байтах 
-	char* str; //указатель на строку в динамической памяти 
+	int size;  //СЂР°Р·РјРµСЂ СЃС‚СЂРѕРєРё РІ Р±Р°Р№С‚Р°С… 
+	char* str; //СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂРѕРєСѓ РІ РґРёРЅР°РјРёС‡РµСЃРєРѕР№ РїР°РјСЏС‚Рё 
 public:
 	int get_size()const
 	{
 		return size;
 	}
-	const char* get_str() const // гарантия что на месте вызова не изменится значение
+	const char* get_str() const // РіР°СЂР°РЅС‚РёСЏ С‡С‚Рѕ РЅР° РјРµСЃС‚Рµ РІС‹Р·РѕРІР° РЅРµ РёР·РјРµРЅРёС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ
 	{
 		return str;
 	}
@@ -25,7 +25,7 @@ public:
 		return str;
 	}
 
-	//конструкторы
+	//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
 
 	explicit String(int size = 80)
 	{
@@ -43,8 +43,8 @@ public:
 		cout << "Constuctor\t\t" << this << endl;
 	}
 
-	//конструктор копирования DeepCopy - ПОБИТОВОЕ КОПИРОВАНИЕ - т е выделять дин память под объект и побитово
-	// поэлементно копировать содержимое динам памяти из существующего объекта в создаваемый
+	//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ DeepCopy - РџРћР‘РРўРћР’РћР• РљРћРџРР РћР’РђРќРР• - С‚ Рµ РІС‹РґРµР»СЏС‚СЊ РґРёРЅ РїР°РјСЏС‚СЊ РїРѕРґ РѕР±СЉРµРєС‚ Рё РїРѕР±РёС‚РѕРІРѕ
+	// РїРѕСЌР»РµРјРµРЅС‚РЅРѕ РєРѕРїРёСЂРѕРІР°С‚СЊ СЃРѕРґРµСЂР¶РёРјРѕРµ РґРёРЅР°Рј РїР°РјСЏС‚Рё РёР· СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РѕР±СЉРµРєС‚Р° РІ СЃРѕР·РґР°РІР°РµРјС‹Р№
 	String(const String& other)
 	{
 		this->size = other.size;
@@ -52,12 +52,12 @@ public:
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor\t\t" << this << endl;
 	}
-	String(String&& other)
+	String(String&& other)// РІС‹РїРѕР»РЅСЏРµС‚ Shallow Copy - РїРѕРІРµСЂС…РЅРѕСЃС‚РѕРµ РєРѕРїРёСЂРѕРІР°РЅРёРµ(РєРѕРїРёСЂСѓРµС‚СЃСЏ Р°РґСЂРµСЃ)
 	{
 		this->size = other.size;
 		this->str = other.str;
 		other.size = 0;
-		other.str = nullptr; //защищаем память от удаления деструктором
+		other.str = nullptr; //Р·Р°С‰РёС‰Р°РµРј РїР°РјСЏС‚СЊ РѕС‚ СѓРґР°Р»РµРЅРёСЏ РґРµСЃС‚СЂСѓРєС‚РѕСЂРѕРј
 		cout << "MoveConstructor\t\t" << this << endl;
 	}
 
@@ -69,7 +69,7 @@ public:
 		cout << "Destructor\t\t" << this << endl;
 	}
 
-	//оператор присваивания
+	//РѕРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 	String& operator=(const String& other)
 	{
 		if (this == &other)return *this;
@@ -80,6 +80,7 @@ public:
 		cout << "CopyAssignment\t" << this << endl;
 		return *this;
 	}
+	// MoveAssignment : РѕРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ-РїРµСЂРµРЅРѕСЃР° РІС‹РїРѕР»РЅСЏРµС‚ Shaloow copy
 	String& operator=(String&& other)
 	{
 		if (this == &other)return *this;
@@ -90,7 +91,6 @@ public:
 		other.str = nullptr;
 		cout << "MoveAssignment\t\t" << this << endl;
 		return *this;
-
 	}
 	char operator[](int i)const
 	{
@@ -101,7 +101,7 @@ public:
 		return str[i];
 	}
 
-	//методы 
+	//РјРµС‚РѕРґС‹ 
 	void info() const
 	{
 		cout << "Size\t" << size << endl;
@@ -129,9 +129,9 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 	return os << obj.get_str();
 }
 
-std::istream& operator>>(std::istream& cin, String& obj) //ПРОБЕЛ - разделитель прерывает работу !!!! ввол без пробелов
+std::istream& operator>>(std::istream& cin, String& obj) //РџР РћР‘Р•Р› - СЂР°Р·РґРµР»РёС‚РµР»СЊ РїСЂРµСЂС‹РІР°РµС‚ СЂР°Р±РѕС‚Сѓ !!!! РІРІРѕР» Р±РµР· РїСЂРѕР±РµР»РѕРІ
 {
-	const int SIZE = 1024; //размер буфера - 1KB
+	const int SIZE = 1024; //СЂР°Р·РјРµСЂ Р±СѓС„РµСЂР° - 1KB
 	char buffer[SIZE] = {};
 	cin >> buffer;
 	obj = buffer;
@@ -156,7 +156,7 @@ void main()
 #ifdef CONSTRUCTORS_CHECK
 
 
-	String str1(5);//explicit-конструктор можно вызвать при помощи круглых скобок
+	String str1(5);//explicit-РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РјРѕР¶РЅРѕ РІС‹Р·РІР°С‚СЊ РїСЂРё РїРѕРјРѕС‰Рё РєСЂСѓРіР»С‹С… СЃРєРѕР±РѕРє
 	str1.info();
 	cout << str1 << endl;
 	str1.info();
@@ -181,12 +181,11 @@ void main()
 	String str1 = "Hello";
 	String str2 = "World";
 	cout << delimiter << endl;
-	String str3 = str1 + str2;
+	String str3;
+	str3 = str1 + str2;
 	cout << delimiter << endl;
 	cout << str3 << endl;
 	cout << delimiter << endl;
-
-
 
 
 #endif // OPERATOR_PLUS
@@ -194,7 +193,7 @@ void main()
 #ifdef ISTREAM_OPERATOR
 
 	String str;
-	cout << "Введите строку";
+	cout << "Р’РІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ";
 	SetConsoleCP(1251);
 	//cin >> str;
 	//cin.getline(str.get_str(), str.get_size());
@@ -203,6 +202,8 @@ void main()
 	cout << str << endl;
 #endif // #define ISTREAM_OPERATOR
 
+
+	//MoveMethods
 
 
 }
